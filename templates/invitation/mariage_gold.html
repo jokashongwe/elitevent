@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'gold': '#C5A059', 'dark-bg': '#0F172A' },
+                    fontFamily: { 'cinzel': ['Cinzel', 'serif'], 'playfair': ['Playfair Display', 'serif'] }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen p-4 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]">
+
+    <div class="relative w-full max-w-md p-1 bg-gradient-to-br from-yellow-600 via-yellow-200 to-yellow-600 rounded shadow-2xl">
+        
+        <div class="bg-dark-bg p-8 md:p-12 text-center border border-yellow-500/30 h-full relative overflow-hidden">
+            
+            <div class="text-gold opacity-60 mb-6 flex justify-center">
+                <svg class="w-16 h-8" viewBox="0 0 100 50" fill="currentColor"><path d="M50 0 C20 0 0 50 0 50 C0 50 20 20 50 20 C80 20 100 50 100 50 C100 50 80 0 50 0 Z" /></svg>
+            </div>
+
+            <h2 class="font-cinzel text-gold text-xs tracking-[0.4em] uppercase mb-4">Invitation Officielle</h2>
+            
+            <h1 class="font-playfair text-4xl md:text-5xl text-white mb-2 leading-tight">
+                {{ event.title }}
+            </h1>
+
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-gold to-transparent mx-auto my-6"></div>
+
+            <p class="font-playfair italic text-gray-400 mb-6">Nous avons l'honneur de recevoir</p>
+            
+            <div class="font-cinzel text-2xl md:text-3xl text-gold border-y border-yellow-500/30 py-4 mb-8">
+                {{ guest.full_name }}
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 text-gray-300 font-cinzel text-sm mb-10">
+                <div class="border-r border-gray-700 pr-4 text-right">
+                    <span class="block text-gold text-xs mb-1">Date</span>
+                    {{ event.date|date:"d M Y" }}
+                </div>
+                <div class="pl-4 text-left">
+                    <span class="block text-gold text-xs mb-1">Heure</span>
+                    {{ event.date|date:"H:i" }}
+                </div>
+            </div>
+
+            <div class="relative inline-block p-1 bg-gradient-to-br from-yellow-600 to-yellow-200 rounded">
+                <div class="bg-white p-2">
+                    <img src="{{ qr_code_url }}" alt="Access Code" class="w-28 h-28 mix-blend-multiply">
+                </div>
+            </div>
+            
+            <p class="text-gray-500 text-[10px] mt-4 font-cinzel tracking-widest">{{ event.location }}</p>
+
+        </div>
+    </div>
+</body>
+</html>

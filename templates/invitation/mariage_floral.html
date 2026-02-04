@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        .font-hand { font-family: 'Dancing Script', cursive; }
+        .font-serif { font-family: 'Lora', serif; }
+    </style>
+</head>
+<body class=" bg-[url(/media/{{event.cover_image}})] bg-no-repeat min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="absolute inset-0   opacity-75 bg-rose-50"></div>
+    <div class="bg-white max-w-lg w-full rounded-xl shadow-xl overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
+        
+        <div class="h-48 overflow-hidden relative">
+            <img src="https://images.unsplash.com/photo-1522383225653-ed111181a951?auto=format&fit=crop&w=800&q=80" alt="Floral" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-white/90 to-transparent"></div>
+        </div>
+
+        <div class="px-8 pb-10 text-center -mt-10 relative z-10">
+            <div class="inline-block bg-rose-100 text-rose-800 px-4 py-1 rounded-full text-xs font-serif tracking-widest uppercase mb-6 shadow-sm">
+                {{ event.date|date:"l d F Y" }}
+            </div>
+
+            <h1 class="font-hand text-5xl text-gray-800 mb-2 leading-tight">
+                {{ event.title }}
+            </h1>
+            
+            <p class="font-serif text-gray-500 italic mb-8 text-sm">
+                Organisé par {{ event.organizer.first_name }} {{ event.organizer.last_name }}
+            </p>
+
+            <div class="border-t border-b border-rose-100 py-6 my-6">
+                <p class="font-serif text-gray-600 text-lg mb-2">Pour notre invité(e) spécial(e)</p>
+                <p class="font-serif text-2xl text-rose-600 font-semibold">{{ guest.full_name }}</p>
+            </div>
+
+            <div class="space-y-1 font-serif text-gray-600 mb-8">
+                <p class="font-bold uppercase text-xs tracking-widest text-gray-400">Lieu</p>
+                <p>{{ event.location }}</p>
+                <p class="text-sm mt-1">{{ event.date|date:"H:i" }}</p>
+            </div>
+
+            <div class="flex flex-col items-center justify-center space-y-3">
+                <div class="p-2 bg-white border border-rose-100 rounded-lg shadow-sm">
+                    <img src="{{ qr_code_url }}" alt="QR Code" class="w-32 h-32">
+                </div>
+                <p class="text-[10px] text-gray-400 uppercase tracking-widest">Présentez ce code à l'entrée</p>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+    {% if is_success %}
+                <div class="mt-8 p-6 bg-green-50 border border-green-200 rounded-lg animate-fade-in-up">
+                    <h3 class="font-hand text-3xl text-green-700 mb-2">Merci pour votre réponse !</h3>
+                    <p class="font-serif text-gray-600">Votre présence est confirmée. Nous avons bien reçu votre choix de boisson et votre message.</p>
+                    <p class="mt-4 text-sm text-gray-400">À très vite, {{ event.organizer.first_name }}</p>
+                </div>
+            
+    {% else %}
+            
+                <form method="POST" class="mt-10 border-t border-rose-100 pt-8 text-left">
+                    {% csrf_token %}
+                    
+                    <h3 class="font-hand text-4xl text-center text-gray-800 mb-6">Serez-vous des nôtres ?</h3>
+
+                    {% if drink_options %}
+                    <div class="mb-8">
+                        <p class="font-serif text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Votre préférence pour le toast</p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {% for drink in drink_options %}
+                            <label class="relative cursor-pointer group">
+                                <input type="radio" name="selected_drink" value="{{ drink.id }}" class="peer sr-only">
+                                
+                                <div class="p-4 rounded-lg border border-gray-200 bg-white hover:border-rose-300 transition-all peer-checked:border-rose-500 peer-checked:bg-rose-50 peer-checked:shadow-md">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-serif font-bold text-gray-700 peer-checked:text-rose-700">{{ drink.name }}</p>
+                                            {% if drink.description %}
+                                            <p class="text-xs text-gray-500 italic">{{ drink.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="hidden peer-checked:block text-rose-500">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-8">
+                        <p class="font-serif text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 text-center">Un petit mot pour les mariés ?</p>
+                        <div class="relative">
+                            <textarea name="guestbook_message" rows="4" 
+                                class="w-full p-4 bg-soft-cream border border-gray-200 rounded-lg font-serif italic text-gray-600 focus:outline-none focus:border-rose-400 focus:ring-1 focus:ring-rose-400 resize-none"
+                                placeholder="Laissez-nous un message..."></textarea>
+                            <div class="absolute bottom-3 right-3 text-rose-300">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gray-800 text-white font-serif py-4 rounded-lg shadow-lg hover:bg-rose-900 transition-colors duration-300 uppercase tracking-widest text-sm font-semibold">
+                        Confirmer ma venue
+                    </button>
+                    
+                    <p class="text-center text-xs text-gray-400 mt-4 italic">En cliquant, vous validerez votre présence.</p>
+                </form>
+            
+    {% endif %}
+    </div>
+</body>
+</html>

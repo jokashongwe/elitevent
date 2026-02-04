@@ -1,0 +1,58 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+
+    <div class="bg-white w-full max-w-sm rounded-xl shadow-2xl overflow-hidden text-center">
+        
+        <div class="p-6 {% if guest.has_arrived %}bg-green-600{% else %}bg-indigo-600{% endif %}">
+            {% if guest.has_arrived %}
+                <div class="rounded-full bg-white text-green-600 w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white uppercase tracking-wider">Déjà Entré</h2>
+                <p class="text-green-100 text-sm">à {{ guest.checked_in_at|date:"H:i" }}</p>
+            {% else %}
+                <div class="rounded-full bg-white text-indigo-600 w-16 h-16 flex items-center justify-center mx-auto mb-2">
+                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-white uppercase tracking-wider">Vérification</h2>
+            {% endif %}
+        </div>
+
+        <div class="p-6 space-y-4">
+            <div>
+                <p class="text-gray-500 text-xs uppercase font-bold tracking-wide">Nom de l'invité</p>
+                <h3 class="text-3xl font-bold text-gray-800">{{ guest.full_name }}</h3>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-4">
+                <p class="text-gray-500 text-xs uppercase font-bold tracking-wide">Événement</p>
+                <p class="text-lg text-indigo-600 font-medium">{{ event.title }}</p>
+            </div>
+
+            {% if guest.is_confirmed == False %} <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded text-sm font-bold">
+                ⚠️ Attention : Cet invité n'avait pas confirmé sa venue.
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="p-6 bg-gray-50 border-t border-gray-100">
+            {% if not guest.has_arrived %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-lg shadow-lg text-xl transition transform active:scale-95 flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        VALIDER L'ENTRÉE
+                    </button>
+                </form>
+            {% else %}
+                <p class="text-gray-400 text-sm mb-4">Entrée déjà validée.</p>
+                <a href="{% url 'dashboard_home' %}" class="block w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-lg">
+                    Retour au menu
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

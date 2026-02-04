@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation de Mariage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'script': ['"Great Vibes"', 'cursive'],
+                        'serif': ['"Playfair Display"', 'serif'],
+                    },
+                    colors: {
+                        'gold': '#D4AF37',
+                        'soft-cream': '#FDFBF7',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-soft-cream w-full max-w-2xl shadow-2xl rounded-sm overflow-hidden relative">
+        <div class="w-full h-64 md:h-80 overflow-hidden relative">
+        {% if event.cover_image %}
+            <img src="{{ event.cover_image.url }}" alt="Cover Event" class="w-full h-full object-cover">
+        {% else %}
+            <img src="https://images.unsplash.com/photo-1519225448526-0ca85c53563e?auto=format&fit=crop&w=1000&q=80" alt="Default Wedding" class="w-full h-full object-cover opacity-80">
+        {% endif %}
+        
+        <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-soft-cream to-transparent"></div>
+    </div>
+        <div class="m-4 border-4 border-double border-gold p-8 md:p-12 text-center relative z-10">
+
+            <p class="uppercase tracking-[0.3em] text-gray-500 text-sm mb-6 font-serif">
+                Invitation au Mariage
+            </p>
+
+            <div class="font-script text-6xl md:text-8xl text-gray-800 mb-6 leading-tight">
+                {{ event.title }}
+            </div>
+
+            <p class="font-serif text-gray-600 text-lg md:text-xl italic mb-8">
+                Ont la joie de convier
+                <br>
+                <span class="text-2xl text-gray-900 font-bold not-italic mt-2 block">
+                    {{ guest.full_name }}
+                </span>
+                <br>
+                à célébrer leur union.
+            </p>
+
+            <div class="w-16 h-1 bg-gold mx-auto mb-8"></div>
+
+            <div class="font-serif text-gray-800 space-y-2 mb-10">
+                <p class="text-2xl font-bold uppercase tracking-widest">
+                    {{ event.date|date:"l d F Y" }}
+                </p>
+                <p class="text-xl">
+                    à {{ event.date|date:"H:i" }}
+                </p>
+                <p class="text-lg text-gray-600 mt-4">
+                    {{ event.location }}
+                </p>
+            </div>
+
+            {% if qr_code_url %}
+            <div class="mb-8 flex justify-center">
+                <img src="{{ qr_code_url }}" alt="QR Code d'accès" class="w-24 h-24 border border-gray-200 p-1">
+            </div>
+            {% endif %}
+
+            <div class="print:hidden">
+                <a href="https://votresite.com/rsvp/{{ guest.uuid }}" 
+                   class="inline-block bg-gray-900 text-white font-serif px-8 py-3 rounded hover:bg-gold transition duration-300 uppercase tracking-wider text-sm">
+                   Confirmer ma présence
+                </a>
+            </div>
+
+        </div>
+
+        <div class="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/flower-trail.png')]"></div>
+    </div>
+
+</body>
+</html>

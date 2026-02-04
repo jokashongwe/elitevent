@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'burgundy': '#4A0404',
+                        'gold-creme': '#F4E4C1',
+                        'gold-rich': '#D4AF37',
+                    },
+                    fontFamily: {
+                        'script': ['"Great Vibes"', 'cursive'],
+                        'serif': ['"Playfair Display"', 'serif'],
+                    },
+                    // Personnalisation de l'animation "pulse" pour un effet battement de coeur
+                    keyframes: {
+                        heartbeat: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '25%': { transform: 'scale(1.1)' },
+                            '50%': { transform: 'scale(1)' },
+                            '75%': { transform: 'scale(1.05)' },
+                        }
+                    },
+                    animation: {
+                        heartbeat: 'heartbeat 1.5s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-burgundy min-h-screen flex items-center justify-center p-6 bg-[url('https://www.transparenttextures.com/patterns/black-linen.png')]">
+
+    <div class="relative w-full max-w-lg p-1 bg-gradient-to-br from-gold-rich via-yellow-200 to-gold-rich rounded-lg shadow-2xl shadow-black/50">
+        
+        <div class="bg-burgundy p-10 md:p-14 text-center border-2 border-gold-rich/30 h-full relative overflow-hidden">
+            
+            <div class="text-gold-rich opacity-70 mb-8 flex justify-center">
+                <svg class="w-24 h-8" viewBox="0 0 100 50" fill="currentColor"><path d="M50 0 C20 0 0 50 0 50 C0 50 20 20 50 20 C80 20 100 50 100 50 C100 50 80 0 50 0 Z" /></svg>
+            </div>
+
+            <h2 class="font-serif text-gold-creme text-xs tracking-[0.4em] uppercase mb-4">Invitation Solennelle</h2>
+            
+            <h1 class="font-serif text-3xl md:text-4xl text-white mb-8 leading-tight font-bold">
+                {{ event.title }}
+            </h1>
+
+            <div class="my-10 relative flex justify-center items-center">
+                <div class="absolute bg-gold-rich/20 w-24 h-24 rounded-full blur-xl animate-pulse"></div>
+                <svg class="w-16 h-16 text-gold-rich animate-heartbeat relative z-10 drop-shadow-[0_0_10px_rgba(212,175,55,0.5)]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+
+            <p class="font-serif italic text-gold-creme/80 mb-4 text-lg">Pour :</p>
+            
+            <div class="font-script text-5xl md:text-6xl text-gold-rich mb-10 py-2 relative inline-block">
+                <span class="relative z-10">{{ guest.full_name }}</span>
+                <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-rich/50 to-transparent"></div>
+            </div>
+
+            <div class="border-t border-b border-gold-rich/20 py-6 mb-8 font-serif text-gold-creme">
+                <p class="text-2xl mb-2 font-bold">{{ event.date|date:"d E Y" }}</p>
+                <p class="text-lg italic">— à {{ event.date|date:"H:i" }} —</p>
+            </div>
+
+            <div class="inline-block p-1 bg-gradient-to-br from-gold-rich to-yellow-100 rounded-lg shadow-lg">
+                <div class="bg-white p-2 rounded-md">
+                    <img src="{{ qr_code_url }}" alt="Access Code" class="w-24 h-24">
+                </div>
+            </div>
+             <p class="text-gold-rich/60 text-[10px] mt-4 font-serif tracking-widest uppercase">{{ event.location }}</p>
+
+        </div>
+    </div>
+</body>
+</html>
