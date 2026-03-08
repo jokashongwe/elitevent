@@ -15,10 +15,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-w#!djflik)5q=7m&1*oi%7dzyu-df)xy+5#pe4ibcwpsj(68pf'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
+# enforce https
+SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT")
 
 # Application definition
 
