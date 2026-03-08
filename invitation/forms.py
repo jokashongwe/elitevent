@@ -42,20 +42,28 @@ class EventForm(forms.ModelForm):
 class GuestForm(forms.ModelForm):
     class Meta:
         model = Guest
-        fields = ['full_name', 'email', 'phone']
+        fields = ['full_name', 'phone', 'has_whatsapp']
         widgets = {
             'full_name': forms.TextInput(attrs={
                 'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500',
                 'placeholder': 'Jean Dupont'
             }),
-            'email': forms.EmailInput(attrs={
+            'has_whatsapp': forms.CheckboxInput(attrs={
                 'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500',
-                'placeholder': 'jean@example.com'
+                'placeholder': 'Jean Dupont'
             }),
             'phone': forms.TextInput(attrs={
                 'class': 'w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500',
                 'placeholder': '+243....'
             }),
+        }
+        labels = {
+            'full_name': 'Nom complet',
+            'phone': 'Numéro de téléphone',
+            'has_whatsapp': 'Avez-vous WhatsApp ?',
+        }
+        help_texts = {
+            'has_whatsapp': 'Si vous avez WhatsApp, vous pouvez entrer votre numéro de téléphone ci-dessous.',
         }
 
 class GuestImportForm(forms.Form):
